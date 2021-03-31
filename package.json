@@ -1,20 +1,23 @@
 {
-  "name": "ccd-extension-youtube-upload",
+  "name": "ccd-extension-sendinblue",
   "version": "0.0.1",
-  "description": "Firebase Extension for Uploading Firebase Storage Videos to YouTube.",
+  "description": "Firebase Extension for dealing with Sendinblue.",
   "main": "functions/lib/index.js",
   "scripts": {
     "debug": "npm run --prefix ./functions build && firebase emulators:start --only functions,firestore --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator",
-    "ext": "npm run --prefix ./functions build && firebase ext:dev:emulators:start --test-params=test.env --project=ccd-extension-youtube-upload --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator"
+    "ext": "npm run --prefix ./functions build && firebase ext:dev:emulators:start --test-params=test.env --project=ccd-extension-sendinblue --inspect-functions --export-on-exit=./backup/data/emulator --import=./backup/data/emulator"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/CodingCatDev/firebase-extension-youtube-upload.git"
+    "url": "git+https://github.com/CodingCatDev/firebase-extension-sendinblue.git"
   },
   "author": "Alex Patterson",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/CodingCatDev/firebase-extension-youtube-upload/issues"
+    "url": "https://github.com/CodingCatDev/firebase-extension-sendinblue/issues"
   },
-  "homepage": "https://github.com/CodingCatDev/firebase-extension-youtube-upload#readme"
+  "homepage": "https://github.com/CodingCatDev/firebase-extension-sendinblue#readme",
+  "dependencies": {
+    "sib-api-v3-sdk": "^8.2.0"
+  }
 }

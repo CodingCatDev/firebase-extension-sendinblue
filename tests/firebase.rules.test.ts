@@ -28,7 +28,7 @@ describe('Positive Tests', () => {
       );
     });
 
-    test('Verify YouTube Token', async () => {
+    test('Verify Sendinblue API', async () => {
       const ref = db.doc(``);
       expect(
         await assertSucceeds(

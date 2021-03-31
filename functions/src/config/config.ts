@@ -4,7 +4,6 @@ admin.initializeApp();
 export const firestore = admin.firestore();
 export const storage = admin.storage();
 
-// YouTube API Key
-export const clientId = process.env.CLIENT_ID;
-export const clientSecret = process.env.CLIENT_SECRET;
-export const tokenCollection = process.env.TOKEN_COLLECTION || 'youtubeApiTokens';
+// Sendinblue API Key
+export const sendinblueApiKey = process.env.SENDINBLUE_API_KEY;
+export const sendinblueListIds = process.env.SENDINBLUE_LIST_IDS;

@@ -1,8 +1,1 @@
-export {
-  onPublish
-  } from './youtube/youtube';
-  export {
-    getAuthURL,
-    createAndSaveTokens,
-    } from './youtube/auth';
-    
+export { addUserToList, removeUserFromList } from './sendinblue/contacts';

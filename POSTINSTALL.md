@@ -1,1 +1,1 @@
-## YouTube Upload Postinstall
+## Sendinblue Upload Postinstall

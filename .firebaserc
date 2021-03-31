@@ -1,5 +1,5 @@
 {
   "projects": {
-    "default": "ccd-extension--upload"
+    "default": "ccd-sendinblue"
   }
 }

@@ -1,19 +1,15 @@
-name: ccd-extension-youtube-upload
+name: ccd-sendinblue
 version: 0.0.1
 specVersion: v1beta
 
-displayName: CodingCatDev Extension YouTube Upload
+displayName: CodingCatDev Extension Sendinblue
 description: >-
-  This extension will allow you to upload a video to storage, 
-  along with metadata to Firestore.
-  It will then take those two items and upload to YouTube. 
-  On completion the details of this upload will then be stored
-  within Firestore in a sub collection.
+  Adds new users from Firebase Authentication to a specified Sendinblue list
 
 license: Apache-2.0
 
-sourceUrl: https://github.com/CodingCatDev/firebase-extension-youtube-upload
-releaseNotesUrl: https://github.com/CodingCatDev/firebase-extension-youtube-upload/CHANGELOG.md
+sourceUrl: https://github.com/CodingCatDev/firebase-extension-sendinblue
+releaseNotesUrl: https://github.com/CodingCatDev/firebase-extension-sendinblue/CHANGELOG.md
 
 author:
   authorName: CodingCatDev
@@ -60,56 +56,44 @@ params:
     required: true
     immutable: true
 
-  - param: CLIENT_ID
-    label: OAuth 2.0 Client ID
+  - param: SENDINBLUE_API_KEY
+    label: Sendinblue API Key V3
     description: >-
-      You can find more details about creating your 
-      [Credentials](https://developers.google.com/youtube/registering_an_application)
-      [Google API Console](https://console.developers.google.com/apis/credentials)
-    example: 929765314568-ubh2567c8lmnopc10bqenka7q8a0k9tq.apps.googleusercontent.com
+      You can find your API Key at
+      [API](https://account.sendinblue.com/advanced/api)
     required: true
-  - param: CLIENT_SECRET
-    label: OAuth 2.0 Client Secret
+    type: string
+    example: xkeysib-b5b7dd4fc0e3d582690640b9849429fb0bebac134a7388bb38c1559222-2222222222
+  - param: SENDINBLUE_LIST_IDS
+    label: Comma seperated string of Sendinblue List IDs
     description: >-
-      You can find more details about creating your 
-      [Credentials](https://developers.google.com/youtube/registering_an_application)
-      [Google API Console](https://console.developers.google.com/apis/credentials)
-    example: TFIhzlelmnop-bJqKrkPODha
+      You can find the list IDs from
+      [Lists](https://my.sendinblue.com/lists)
+    example: 12,13,22
     required: true
-  - param: TOKEN_COLLECTION
-    label: Firestore collection path
-    description: >-
-      Firestore collection path that holds user OAuth Tokens
-    example: youtubeApiTokens
-    required: true
-    validationRegex: "^[^/]+(/[^/]+/[^/]+)*$"
-    validationErrorMessage: Firestore collection paths must be an odd number of segments separated by slashes, e.g. "path/to/collection".
 
 resources:
+  - name: addUserToList
+    type: firebaseextensions.v1beta.function
+    description:
+      Listens for new user accounts (as managed by Firebase Authentication),
+      then automatically adds the new user to your specified MailChimp audience.
+    properties:
+      location: ${param:LOCATION}
+      runtime: nodejs10
+      eventTrigger:
+        eventType: providers/firebase.auth/eventTypes/user.create
+        resource: projects/${param:PROJECT_ID}
 
-  - name: getAuthURL
+  - name: removeUserFromList
     type: firebaseextensions.v1beta.function
-    description: >-
-      Creates OAuth 2.0 url link for authorization
+    description:
+      Listens for existing user accounts to be deleted (as managed by Firebase
+      Authentication), then automatically removes them from your specified
+      MailChimp audience.
     properties:
-      location: ${LOCATION}
-      runtime: nodejs12
-      httpsTrigger: {}
-  - name: createAndSaveTokens
-    type: firebaseextensions.v1beta.function
-    description: >-
-      Takes in an Auth Code. Creates a refresh token and stores that token in TOKEN_COLLECTION
-    properties:
-      location: ${LOCATION}
-      runtime: nodejs12
-      httpsTrigger: {}
-  - name: onPublish
-    type: firebaseextensions.v1beta.function
-    description: >-
-      Takes in storage location document, from Firebase storage and uploads to YouTube file and 
-      Storing results in a http provided path. This is a secure request requiring the user
-      to already have obtained their YouTube token and stored it in TOKEN_COLLECTION.
-    properties:
-      location: ${LOCATION}
-      runtime: nodejs12
-      httpsTrigger: {}
+      location: ${param:LOCATION}
+      runtime: nodejs10
+      eventTrigger:
+        eventType: providers/firebase.auth/eventTypes/user.delete
+        resource: projects/${param:PROJECT_ID}
